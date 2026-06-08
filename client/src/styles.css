@@ -1,0 +1,1609 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #171717;
+  background: #f7f7f8;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+textarea,
+select,
+table {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+.brand-title,
+.page-title,
+.hero-title,
+.rank-number,
+.stat-number,
+.ant-statistic-content {
+  font-family: "Poppins", "Inter", sans-serif;
+  letter-spacing: -0.01em;
+}
+
+h1,
+h2,
+h3,
+.brand-title,
+.page-title,
+.hero-title {
+  font-weight: 700;
+}
+
+.rank-number,
+.stat-number,
+.ant-statistic-content {
+  font-weight: 800;
+}
+
+.ant-layout {
+  background: #f7f7f8;
+}
+
+.bbx-app-sider .ant-layout-sider-children {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.bbx-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 20px;
+}
+
+.bbx-sidebar-brand-logo {
+  height: 48px;
+  width: 48px;
+  flex: none;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  object-fit: contain;
+  box-shadow: 0 8px 18px rgba(23, 23, 23, 0.08);
+}
+
+.bbx-sidebar-brand-title {
+  overflow: visible;
+  color: #0f172a;
+  font-family: "Poppins", "Inter", sans-serif;
+  font-size: 23px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+
+.bbx-sidebar-brand-subtitle {
+  margin-top: 5px;
+  color: #d71920;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.bbx-sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+}
+
+.bbx-sidebar-nav-item {
+  position: relative;
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  gap: 12px;
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #1f2937;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.bbx-sidebar-nav-item + .bbx-sidebar-nav-item {
+  margin-top: 8px;
+}
+
+.bbx-sidebar-nav-item:hover {
+  background: #fef2f2;
+  color: #d71920;
+}
+
+.bbx-sidebar-nav-item.is-active {
+  background: #d71920;
+  color: #ffffff;
+  box-shadow: 0 12px 24px rgba(215, 25, 32, 0.22);
+}
+
+.bbx-sidebar-nav-item.is-active::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  height: 22px;
+  width: 4px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.bbx-sidebar-nav-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  font-size: 20px;
+}
+
+.bbx-sidebar-nav-label {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.bbx-sidebar-account {
+  border-top: 1px solid #e5e7eb;
+  padding: 16px;
+}
+
+.bbx-sidebar-account-divider {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bbx-sidebar-account-divider span {
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.bbx-sidebar-account-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(23, 23, 23, 0.06);
+}
+
+.bbx-sidebar-account-kicker {
+  display: block;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.bbx-sidebar-account-name {
+  min-width: 0;
+  overflow: hidden;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bbx-sidebar-account .ant-tag {
+  flex: none;
+  margin-inline-end: 0;
+}
+
+.bbx-sidebar-account .ant-btn {
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+@media (max-width: 991px) {
+  .bbx-app-sider .ant-layout-sider-children {
+    box-shadow: 16px 0 32px rgba(23, 23, 23, 0.12);
+  }
+}
+
+.bbx-card {
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 28px rgba(23, 23, 23, 0.055);
+}
+
+.bbx-card-accent {
+  border-top: 3px solid #d71920;
+}
+
+.bbx-card-warm {
+  background: linear-gradient(180deg, #fffaf0 0%, #ffffff 72%);
+  border-color: #f5d38a;
+}
+
+.bbx-section-title {
+  margin: 0;
+  color: #171717;
+  font-size: 24px;
+  font-weight: 750;
+}
+
+.bbx-muted {
+  color: #6b7280;
+}
+
+.bbx-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.bbx-table-wrap .ant-table-wrapper {
+  min-width: 100%;
+}
+
+.ant-menu-light .ant-menu-item-selected {
+  background: #e71921 !important;
+  border-right: 0;
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 12px 22px rgba(215, 25, 32, 0.22);
+}
+
+.ant-menu-light .ant-menu-item-selected a,
+.ant-menu-light .ant-menu-item-selected .anticon {
+  color: #ffffff !important;
+}
+
+.ant-menu-light .ant-menu-item {
+  border-radius: 8px;
+  margin: 6px 16px;
+  width: calc(100% - 32px);
+  min-height: 48px;
+  font-weight: 650;
+}
+
+.ant-table-thead > tr > th {
+  font-size: 12px;
+  font-weight: 800 !important;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.bbx-outline-button {
+  border-color: #f05258 !important;
+  color: #d71920 !important;
+  font-weight: 700;
+}
+
+.bbx-outline-button:hover {
+  border-color: #d71920 !important;
+  color: #a80f16 !important;
+}
+
+.bbx-leaderboard-page {
+  position: relative;
+}
+
+.bbx-leaderboard-page::before {
+  content: '';
+  position: fixed;
+  right: -180px;
+  top: 86px;
+  width: 720px;
+  height: 720px;
+  background:
+    linear-gradient(135deg, transparent 0 42%, rgba(215, 25, 32, 0.025) 42% 58%, transparent 58%),
+    radial-gradient(circle at center, rgba(23, 23, 23, 0.035) 0 1px, transparent 1px);
+  background-size: auto, 18px 18px;
+  pointer-events: none;
+}
+
+.bbx-podium-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 16px;
+  padding-top: 14px;
+}
+
+.bbx-podium-card {
+  position: relative;
+  min-height: 245px;
+  border-radius: 8px !important;
+  overflow: visible;
+}
+
+.bbx-podium-card .ant-card-body {
+  display: flex;
+  min-height: 245px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 38px 28px 18px;
+}
+
+.bbx-podium-card.is-featured {
+  min-height: 300px;
+  border: 2px solid #e71921;
+  background:
+    radial-gradient(circle at 50% 28%, rgba(245, 180, 51, 0.22), transparent 31%),
+    #ffffff;
+  box-shadow: 0 18px 42px rgba(215, 25, 32, 0.14);
+}
+
+.bbx-podium-card.is-featured .ant-card-body {
+  min-height: 300px;
+  padding-top: 50px;
+}
+
+.bbx-podium-player-name {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.bbx-podium-card .stat-number {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.bbx-podium-card .text-bbx-muted,
+.bbx-podium-metrics {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+}
+
+.bbx-podium-ribbon {
+  position: absolute;
+  left: 50%;
+  top: -28px;
+  z-index: 2;
+  display: flex;
+  height: 58px;
+  width: 64px;
+  transform: translateX(-50%) rotate(-3deg);
+  align-items: center;
+  justify-content: center;
+  clip-path: polygon(0 0, 100% 0, 88% 78%, 50% 66%, 12% 78%);
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 950;
+  font-family: "Poppins", "Inter", sans-serif;
+  line-height: 1;
+  padding-bottom: 12px;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.bbx-podium-ribbon.rank-1 {
+  top: -32px;
+  height: 70px;
+  width: 78px;
+  background: linear-gradient(135deg, #ff8b20, #d71920 52%, #a80f16);
+  font-size: 34px;
+  padding-bottom: 16px;
+}
+
+.bbx-podium-ribbon.rank-2 {
+  background: linear-gradient(135deg, #cbd5df, #7d8a96);
+}
+
+.bbx-podium-ribbon.rank-3 {
+  background: linear-gradient(135deg, #d98b53, #a84f2b);
+}
+
+.bbx-podium-logo-wrap {
+  position: relative;
+  margin-inline: auto;
+  display: flex;
+  height: 86px;
+  width: 130px;
+  align-items: center;
+  justify-content: center;
+}
+
+.bbx-podium-laurel {
+  position: absolute;
+  inset: 0;
+  mask: url('/brand/laurel.svg') center / contain no-repeat;
+  -webkit-mask: url('/brand/laurel.svg') center / contain no-repeat;
+  pointer-events: none;
+}
+
+.bbx-podium-laurel.rank-1 {
+  background: linear-gradient(135deg, #f8d66d, #d99b16 58%, #b97808);
+}
+
+.bbx-podium-laurel.rank-2 {
+  background: linear-gradient(135deg, #eef2f6, #aeb8c3 58%, #7d8996);
+}
+
+.bbx-podium-laurel.rank-3 {
+  background: linear-gradient(135deg, #e2a06f, #b86635 58%, #8f4525);
+}
+
+.bbx-podium-logo {
+  position: relative;
+  z-index: 1;
+  height: 64px;
+  width: 64px;
+  object-fit: contain;
+}
+
+.bbx-podium-crown {
+  position: absolute;
+  top: -13px;
+  z-index: 2;
+  color: #f5b433;
+  font-size: 24px;
+}
+
+.bbx-podium-empty {
+  display: flex;
+  min-height: 128px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.bbx-podium-empty-icon {
+  display: flex;
+  height: 76px;
+  width: 76px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #eef0f3;
+  color: #b8bec8;
+  font-size: 34px;
+}
+
+.bbx-podium-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  border-top: 1px solid #f0c5c7;
+  padding-top: 14px;
+}
+
+.bbx-podium-metrics .font-black {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.bbx-leaderboard-table-card .ant-card-body {
+  padding: 16px;
+}
+
+.bbx-leaderboard-table-card .ant-table-tbody > tr > td {
+  padding-block: 14px;
+  font-size: 15px;
+}
+
+.bbx-leaderboard-table-card .ant-pagination {
+  margin-bottom: 6px !important;
+}
+
+.bbx-leaderboard-table-card .ant-pagination-item-active {
+  border-color: #e71921 !important;
+  background: #e71921 !important;
+}
+
+.bbx-leaderboard-table-card .ant-pagination-item-active a {
+  color: #ffffff !important;
+}
+
+.bbx-import-grid {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 1280px) {
+  .bbx-import-page > .mb-6 {
+    margin-bottom: 16px;
+  }
+
+  .bbx-import-grid {
+    grid-template-columns: minmax(0, 1.45fr) minmax(420px, 0.85fr);
+    gap: 20px;
+  }
+
+}
+
+.bbx-import-stepbar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: 0;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 22px rgba(23, 23, 23, 0.05);
+  padding: 11px 18px;
+}
+
+.bbx-import-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.bbx-import-step-line {
+  min-width: 24px;
+  flex: 1;
+  height: 1px;
+  margin-inline: 10px;
+  background: #d7dbe2;
+}
+
+.bbx-import-step-dot {
+  display: inline-flex;
+  height: 28px;
+  width: 28px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d7dbe2;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #8b94a3;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.bbx-import-step-dot.is-active,
+.bbx-import-step-dot.is-done {
+  border-color: #e71921;
+  background: #e71921;
+  color: #ffffff;
+}
+
+.bbx-import-step-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 800;
+  color: #171717;
+}
+
+.bbx-import-form-card .ant-card-body {
+  padding: 24px 28px;
+}
+
+.bbx-import-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: #171717;
+}
+
+.bbx-import-section-heading span {
+  display: inline-flex;
+  height: 28px;
+  width: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #fff1f1;
+  color: #e71921;
+}
+
+.bbx-import-section-heading.is-subtle {
+  margin-top: 2px;
+  margin-bottom: 7px;
+}
+
+.bbx-import-section-heading.is-subtle span {
+  background: #f7f7f8;
+  color: #8b94a3;
+}
+
+.bbx-import-form .ant-form-item {
+  margin-bottom: 11px;
+}
+
+.bbx-import-form .ant-form-item-label {
+  padding-bottom: 4px;
+}
+
+.bbx-import-form .ant-form-item-label > label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #171717;
+}
+
+.bbx-import-form .ant-input-affix-wrapper,
+.bbx-import-form .ant-input,
+.bbx-import-form .ant-select-selector {
+  border-radius: 6px !important;
+}
+
+.bbx-import-form textarea.ant-input {
+  min-height: 72px;
+}
+
+.bbx-import-form .ant-form-item-extra {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.bbx-import-source-picker {
+  margin-bottom: 11px;
+}
+
+.bbx-import-source-picker-label {
+  margin-bottom: 6px;
+  color: #171717;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bbx-import-source-picker .ant-segmented,
+.bbx-top-cut-collapse .ant-segmented {
+  background: #f1f3f5;
+  padding: 3px;
+}
+
+.bbx-import-source-picker .ant-segmented-item,
+.bbx-top-cut-collapse .ant-segmented-item {
+  min-height: 34px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bbx-import-source-picker .ant-segmented-item-selected,
+.bbx-top-cut-collapse .ant-segmented-item-selected {
+  color: #d71920;
+}
+
+.bbx-import-source-option {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding-block: 2px;
+}
+
+.bbx-import-source-option strong,
+.bbx-import-source-option span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bbx-import-source-option strong {
+  color: #171717;
+  font-size: 13px;
+}
+
+.bbx-import-source-option span {
+  color: #6b7280;
+  font-size: 11px;
+}
+
+.bbx-top-cut-collapse {
+  margin-top: -2px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.bbx-top-cut-collapse > .ant-collapse-item > .ant-collapse-header {
+  align-items: center;
+  padding: 11px 12px;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bbx-top-cut-collapse .ant-collapse-content-box {
+  padding: 2px 12px 12px !important;
+}
+
+.bbx-top-cut-collapse .ant-form-item {
+  margin-bottom: 0;
+}
+
+.bbx-import-source-alert {
+  border-color: #91caff !important;
+  background: #e6f4ff !important;
+  padding-block: 10px;
+}
+
+.bbx-import-user-warning {
+  align-items: center;
+  padding: 8px 12px;
+}
+
+.bbx-import-user-warning .ant-alert-message {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.bbx-import-preview-card .ant-card-head {
+  min-height: 46px;
+  border-bottom: 0;
+  padding-inline: 18px;
+}
+
+.bbx-import-preview-card .ant-card-head-title {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.bbx-import-preview-card .ant-card-body {
+  padding: 0 14px 14px;
+}
+
+.bbx-import-preview-stat {
+  display: flex;
+  min-height: 58px;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 7px;
+  background: #ffffff;
+  padding: 10px 14px;
+}
+
+.bbx-import-preview-stat.is-featured {
+  min-height: 68px;
+  border-color: #ffb3b6;
+  background: linear-gradient(180deg, #fffafa, #ffffff);
+}
+
+.bbx-import-preview-stat-icon {
+  color: #e71921;
+  font-size: 30px;
+}
+
+.bbx-import-summary-card {
+  margin-block: 9px;
+  border-color: #e5e7eb !important;
+}
+
+.bbx-import-summary-card .ant-card-body {
+  padding: 10px 12px;
+}
+
+.bbx-import-summary-row {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding-block: 3px;
+  font-size: 12px;
+}
+
+.bbx-import-summary-row > span {
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+.bbx-import-summary-row > strong {
+  min-width: 0;
+  color: #171717;
+  font-weight: 700;
+}
+
+.bbx-preview-clean-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+  border: 1px solid #b7ebc6;
+  border-radius: 6px;
+  background: #f0fff4;
+  padding: 7px 10px;
+  color: #16823a;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bbx-preview-details-collapse {
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 7px;
+  background: #ffffff;
+}
+
+.bbx-preview-details-collapse > .ant-collapse-item + .ant-collapse-item {
+  border-top: 1px solid #e5e7eb;
+}
+
+.bbx-preview-details-collapse > .ant-collapse-item > .ant-collapse-header {
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 10px;
+  color: #171717;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.bbx-preview-details-collapse .ant-collapse-content-box {
+  padding: 0 8px 8px !important;
+}
+
+.bbx-preview-detail-body .bbx-table-wrap {
+  overflow-x: hidden;
+}
+
+.bbx-preview-detail-body .ant-table-thead > tr > th {
+  padding: 6px 8px;
+  font-size: 10px;
+}
+
+.bbx-preview-detail-body .ant-table-tbody > tr > td {
+  padding: 5px 8px;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.bbx-review-flags-alert .ant-alert-description {
+  min-width: 0;
+}
+
+.bbx-review-flag-item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.bbx-review-flag-item .ant-tag {
+  align-self: flex-start;
+  flex: none;
+  margin-inline-end: 0;
+  white-space: normal;
+}
+
+.bbx-review-flag-item > span {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: #7c4a03;
+}
+
+.bbx-profile-page {
+  position: relative;
+}
+
+.bbx-profile-page::before {
+  content: '';
+  position: fixed;
+  right: -100px;
+  top: 72px;
+  width: 520px;
+  height: 520px;
+  background-image: url('/brand/zamboanga-pincers-logo.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: grayscale(1);
+  opacity: 0.035;
+  pointer-events: none;
+}
+
+.bbx-profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  gap: 18px;
+  align-items: start;
+}
+
+.bbx-profile-hero {
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, transparent 0 78%, rgba(215, 25, 32, 0.08) 78%),
+    #ffffff;
+}
+
+.bbx-profile-hero .ant-card-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 28px;
+  align-items: center;
+  padding: 30px 34px;
+}
+
+.bbx-profile-player {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+}
+
+.bbx-profile-avatar {
+  height: 112px;
+  width: 112px;
+  flex: none;
+  border-radius: 999px;
+  border: 5px solid #f4d9da;
+  background: #ffffff;
+  object-fit: contain;
+  box-shadow: 0 12px 28px rgba(23, 23, 23, 0.1);
+}
+
+.bbx-profile-rank-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+.bbx-profile-points {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 118px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+.bbx-profile-points-laurel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 160px;
+  height: 94px;
+  transform: translate(-50%, -43%);
+  background: rgba(107, 114, 128, 0.13);
+  mask: url('/brand/laurel.svg') center / contain no-repeat;
+  -webkit-mask: url('/brand/laurel.svg') center / contain no-repeat;
+  pointer-events: none;
+}
+
+.bbx-profile-points-value {
+  position: relative;
+  z-index: 1;
+  color: #e71921;
+  font-size: 64px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.bbx-profile-stat .ant-card-body {
+  display: flex;
+  min-height: 106px;
+  align-items: center;
+  gap: 18px;
+  padding: 20px;
+}
+
+.bbx-profile-stat-icon {
+  display: flex;
+  height: 42px;
+  width: 42px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  color: #e71921;
+  font-size: 28px;
+}
+
+.bbx-profile-stat-icon.is-success {
+  color: #15803d;
+}
+
+.bbx-profile-history {
+  margin-top: 18px;
+}
+
+.bbx-profile-history .ant-card-head {
+  border-bottom: 0;
+}
+
+.bbx-profile-history .ant-card-head-title {
+  position: relative;
+  font-size: 15px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.bbx-profile-history .ant-card-head-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 32px;
+  height: 2px;
+  background: #e71921;
+}
+
+.bbx-profile-history .ant-table-thead > tr > th {
+  padding-block: 10px;
+}
+
+.bbx-profile-history .ant-table-tbody > tr > td {
+  padding-block: 13px;
+}
+
+.bbx-history-tournament-link {
+  height: auto;
+  padding: 0;
+  color: #171717;
+  font-weight: 700;
+  text-align: left;
+}
+
+.bbx-history-tournament-link:hover {
+  color: #d71920 !important;
+}
+
+.bbx-history-detail-title {
+  margin: 20px 0 10px;
+  color: #171717;
+  font-family: "Poppins", "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bbx-history-details .ant-table-thead > tr > th,
+.bbx-history-details .ant-table-tbody > tr > td {
+  padding-block: 9px;
+}
+
+.bbx-history-details-modal .ant-modal-content {
+  max-height: none;
+}
+
+.bbx-history-details-modal .ant-modal-body {
+  max-height: none;
+  overflow: visible;
+}
+
+.bbx-history-details .ant-table-tbody > tr.bbx-match-stage-divider > td,
+.bbx-preview-detail-body .ant-table-tbody > tr.bbx-match-stage-divider > td {
+  border-top: 3px solid #f2b8bb;
+}
+
+.bbx-match-round-note {
+  margin: 8px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.bbx-profile-sidebar {
+  position: sticky;
+  top: 24px;
+}
+
+.bbx-achievements-card {
+  border-top: 3px solid #e71921;
+}
+
+.bbx-achievements-card .ant-card-head-title {
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.bbx-achievement {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+}
+
+.bbx-achievement + .bbx-achievement {
+  border-top: 1px solid #f0f1f3;
+}
+
+.bbx-achievement-icon {
+  display: flex;
+  height: 44px;
+  width: 44px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ffc2c4;
+  border-radius: 999px;
+  color: #e71921;
+  font-size: 22px;
+}
+
+.bbx-achievement strong {
+  display: block;
+  color: #171717;
+  font-size: 13px;
+}
+
+.bbx-achievement p {
+  margin: 3px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.bbx-profile-callout {
+  display: flex;
+  gap: 14px;
+  margin-top: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fafafa;
+  padding: 16px;
+}
+
+.bbx-profile-callout > .anticon {
+  color: #e71921;
+  font-size: 26px;
+}
+
+.bbx-profile-callout strong {
+  display: block;
+  font-size: 13px;
+}
+
+.bbx-profile-callout p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.bbx-admin-page {
+  position: relative;
+}
+
+.bbx-admin-summary {
+  overflow: hidden;
+  position: relative;
+}
+
+.bbx-admin-summary::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: #f59e0b;
+}
+
+.bbx-admin-summary.is-flags::before {
+  background: #3b82f6;
+}
+
+.bbx-admin-summary.is-danger::before {
+  background: #e71921;
+}
+
+.bbx-admin-summary .ant-card-body {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 26px 30px;
+}
+
+.bbx-admin-summary-icon {
+  display: flex;
+  height: 58px;
+  width: 58px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #fff2df;
+  color: #f59e0b;
+  font-size: 26px;
+}
+
+.bbx-admin-summary.is-flags .bbx-admin-summary-icon {
+  background: #eaf2ff;
+  color: #3b82f6;
+}
+
+.bbx-admin-summary.is-danger .bbx-admin-summary-icon {
+  background: #ffe4e6;
+  color: #e71921;
+}
+
+.bbx-admin-tabs .ant-tabs-nav {
+  margin-bottom: 14px;
+}
+
+.bbx-admin-tabs .ant-tabs-tab {
+  color: #4b5563;
+  font-weight: 800;
+}
+
+.bbx-admin-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #e71921 !important;
+}
+
+.bbx-admin-tabs .ant-tabs-ink-bar {
+  background: #e71921;
+  height: 3px !important;
+}
+
+.bbx-admin-tabs .ant-badge-count {
+  margin-left: 6px;
+  background: #e71921;
+  box-shadow: none;
+}
+
+.bbx-admin-table-card .ant-card-head {
+  min-height: 74px;
+  border-bottom: 0;
+}
+
+.bbx-admin-table-card .ant-card-head-title {
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.bbx-admin-table-card .ant-card-head-title p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.bbx-admin-table-card .ant-card-extra {
+  max-width: 440px;
+}
+
+.bbx-admin-table-card .ant-card-extra .ant-input-affix-wrapper {
+  width: 260px;
+}
+
+.bbx-admin-table-card .ant-card-body {
+  padding: 0 18px 16px;
+}
+
+.bbx-admin-table-card .ant-table-thead > tr > th {
+  padding-block: 11px;
+}
+
+.bbx-admin-table-card .ant-table-tbody > tr > td {
+  padding-block: 14px;
+  font-size: 13px;
+}
+
+.bbx-admin-event-date {
+  font-size: 12px;
+}
+
+.bbx-admin-row-actions {
+  white-space: nowrap;
+}
+
+.bbx-admin-row-actions .ant-btn,
+.bbx-admin-review-button {
+  min-width: 82px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+  .bbx-admin-pending-table {
+    min-width: 1040px;
+  }
+}
+
+.bbx-admin-filter {
+  border-color: #e5e7eb;
+  font-weight: 700;
+}
+
+.bbx-admin-filter.is-active {
+  border-color: #ff7a7f !important;
+  color: #e71921 !important;
+}
+
+.bbx-login-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(255, 255, 255, 0.96) 0%, rgba(247, 247, 248, 0.92) 42%, #eef0f3 100%),
+    linear-gradient(135deg, #ffffff 0%, #f4f5f7 100%);
+}
+
+.bbx-login-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(215, 25, 32, 0.05) 0 12%, transparent 12% 100%),
+    repeating-linear-gradient(135deg, transparent 0 20px, rgba(23, 23, 23, 0.018) 20px 24px);
+  pointer-events: none;
+}
+
+.bbx-login-watermark {
+  position: absolute;
+  background-image: url('/brand/zamboanga-pincers-logo.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.035;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+.bbx-login-watermark-left {
+  left: -90px;
+  top: 130px;
+  width: 420px;
+  height: 420px;
+}
+
+.bbx-login-podium {
+  position: absolute;
+  right: -12px;
+  top: 300px;
+  opacity: 0.18;
+  color: #e5e7eb;
+  pointer-events: none;
+}
+
+.bbx-login-card {
+  max-width: 640px;
+  border-color: #d7dbe2 !important;
+  border-top: 5px solid #d71920 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 22px 56px rgba(23, 23, 23, 0.14) !important;
+}
+
+.bbx-login-card .ant-card-body {
+  padding: 32px 44px 28px;
+}
+
+.bbx-login-brand-title {
+  margin: 0 !important;
+  color: #171717 !important;
+  font-size: 28px !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+}
+
+.bbx-login-main-title {
+  margin: 0 !important;
+  color: #171717 !important;
+  font-size: 34px !important;
+  font-weight: 950 !important;
+  line-height: 1.02 !important;
+}
+
+.bbx-auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  border: 1px solid #d7dbe2;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.bbx-auth-tabs button {
+  position: relative;
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 0;
+  border-right: 1px solid #d7dbe2;
+  background: transparent;
+  color: #6b7280;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.bbx-auth-tabs button:last-child {
+  border-right: 0;
+}
+
+.bbx-auth-tabs button.is-active {
+  color: #d71920;
+  box-shadow: inset 0 0 0 1px rgba(215, 25, 32, 0.32);
+}
+
+.bbx-auth-tabs button.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-right: 9px solid transparent;
+  border-bottom: 9px solid #d71920;
+  border-left: 9px solid transparent;
+}
+
+.bbx-login-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.bbx-login-form .ant-form-item-label > label {
+  color: #171717;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.bbx-login-form .ant-input-affix-wrapper {
+  min-height: 42px;
+  border-color: #d7dbe2;
+  border-radius: 8px;
+  padding-inline: 18px;
+  font-size: 14px;
+}
+
+.bbx-login-form .ant-input-affix-wrapper .anticon {
+  color: #d71920;
+  font-size: 17px;
+}
+
+.bbx-login-form .ant-input,
+.bbx-login-form .ant-input-password input {
+  font-size: 14px;
+}
+
+.bbx-login-form .ant-btn-primary {
+  min-height: 44px;
+  border-radius: 8px;
+  box-shadow: 0 12px 22px rgba(215, 25, 32, 0.24);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+@media (max-width: 768px) {
+  .bbx-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bbx-profile-hero .ant-card-body {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .bbx-profile-player {
+    align-items: flex-start;
+  }
+
+  .bbx-profile-avatar {
+    height: 84px;
+    width: 84px;
+  }
+
+  .bbx-profile-points {
+    border-left: 0;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 18px;
+    text-align: center;
+  }
+
+  .bbx-profile-points-laurel {
+    width: 132px;
+    height: 78px;
+  }
+
+  .bbx-profile-points-value {
+    font-size: 48px;
+  }
+
+  .bbx-profile-sidebar {
+    position: static;
+  }
+
+  .bbx-import-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bbx-import-stepbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .bbx-import-step {
+    position: relative;
+    padding-right: 0;
+  }
+
+  .bbx-import-step-line {
+    position: absolute;
+    bottom: -8px;
+    left: 14px;
+    width: 1px;
+    min-width: 0;
+    height: 6px;
+    margin-inline: 0;
+  }
+
+  .bbx-import-form-card .ant-card-body {
+    padding: 20px;
+  }
+
+  .bbx-preview-detail-body .bbx-table-wrap {
+    overflow-x: auto;
+  }
+
+  .bbx-preview-detail-body .ant-table-wrapper {
+    min-width: 360px;
+  }
+
+  .bbx-podium-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .bbx-podium-card,
+  .bbx-podium-card.is-featured,
+  .bbx-podium-card .ant-card-body,
+  .bbx-podium-card.is-featured .ant-card-body {
+    min-height: auto;
+  }
+
+  .bbx-podium-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bbx-login-card .ant-card-body {
+    padding: 34px 24px 28px;
+  }
+
+  .bbx-login-brand-title {
+    font-size: 32px !important;
+  }
+
+  .bbx-login-main-title {
+    font-size: 40px !important;
+  }
+
+  .bbx-login-podium,
+  .bbx-login-watermark-left {
+    display: none;
+  }
+
+  .bbx-auth-tabs button {
+    min-height: 56px;
+    font-size: 16px;
+  }
+}
