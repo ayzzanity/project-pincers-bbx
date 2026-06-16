@@ -72,6 +72,15 @@ export const api = {
     }),
   getLeaderboard: () => apiRequest('/api/leaderboard'),
   getMonthlyLeaderboard: () => apiRequest('/api/leaderboard/monthly'),
+  getFilteredLeaderboard: ({ year, month } = {}) => {
+    const params = new globalThis.URLSearchParams();
+
+    if (year) params.set('year', year);
+    if (month) params.set('month', month);
+
+    const query = params.toString();
+    return apiRequest(`/api/leaderboard/filtered${query ? `?${query}` : ''}`);
+  },
   getPlayerStats: (userId) => apiRequest(`/api/leaderboard/players/${userId}/stats`),
   getPlayerHistory: (userId) => apiRequest(`/api/leaderboard/players/${userId}/history`),
   getPlayerHistoryDetails: (userId, recordId) =>

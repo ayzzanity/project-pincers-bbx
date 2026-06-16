@@ -217,13 +217,17 @@ The backend source of truth is `scoringService`:
 
 - Swiss Round Win: `1`
 - Top Cut Entry: `2`
-- 4th Place: `4`
-- 3rd Place: `5`
-- Swiss King: `8`
+- Swiss King: `5`
 - Finisher / 2nd Place: `8`
 - Champion: `10`
+- 3rd Place: `5`
+- 4th Place: `4`
+- 5th Place: `3`
+- 6th Place: `2`
+- 7th Place: `1`
+- 8th Place: `1`
 
-Champion, 2nd, 3rd, and 4th are mutually exclusive. Swiss King and Champion can stack. Top Cut entry and final placement can stack.
+Champion, 2nd, 3rd, 4th, 5th, 6th, 7th, and 8th are mutually exclusive. Swiss King and Champion can stack. Top Cut entry and final placement can stack. Placement points are only awarded when Challonge provides a confirmed `final_rank` for that placement.
 
 ## Confirm Import Transaction Flow
 

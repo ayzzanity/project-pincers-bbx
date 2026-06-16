@@ -2,8 +2,12 @@ const POINTS = {
   swissWin: 1,
   topCutEntry: 2,
   fourthPlace: 4,
+  fifthPlace: 3,
+  sixthPlace: 2,
+  seventhPlace: 1,
+  eighthPlace: 1,
   thirdPlace: 5,
-  swissKing: 8,
+  swissKing: 5,
   finisher: 8,
   champion: 10
 };
@@ -18,6 +22,10 @@ function calculatePoints({ swissWins = 0, topCutEntry = false, isSwissKing = fal
   if (finalPlacement === 2) total += POINTS.finisher;
   if (finalPlacement === 3) total += POINTS.thirdPlace;
   if (finalPlacement === 4) total += POINTS.fourthPlace;
+  if (finalPlacement === 5) total += POINTS.fifthPlace;
+  if (finalPlacement === 6) total += POINTS.sixthPlace;
+  if (finalPlacement === 7) total += POINTS.seventhPlace;
+  if (finalPlacement === 8) total += POINTS.eighthPlace;
 
   return total;
 }

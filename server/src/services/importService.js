@@ -1,7 +1,7 @@
 const { supabaseAdmin } = require('../lib/supabase');
 const { fetchTournament } = require('./challongeService');
 const { fetchGroupStandings } = require('./challongeStandingsService');
-const { calculatePoints, classifyMatchForParticipant } = require('./scoringService');
+const { POINTS, calculatePoints, classifyMatchForParticipant } = require('./scoringService');
 const { flagsForPreview } = require('./reviewFlagService');
 const { AppError } = require('../utils/errors');
 
@@ -598,10 +598,14 @@ function buildPointBreakdown({ swissWins, topCutEntry, isSwissKing, finalPlaceme
 }
 
 function placementPoints(finalPlacement) {
-  if (finalPlacement === 1) return 10;
-  if (finalPlacement === 2) return 8;
-  if (finalPlacement === 3) return 5;
-  if (finalPlacement === 4) return 4;
+  if (finalPlacement === 1) return POINTS.champion;
+  if (finalPlacement === 2) return POINTS.finisher;
+  if (finalPlacement === 3) return POINTS.thirdPlace;
+  if (finalPlacement === 4) return POINTS.fourthPlace;
+  if (finalPlacement === 5) return POINTS.fifthPlace;
+  if (finalPlacement === 6) return POINTS.sixthPlace;
+  if (finalPlacement === 7) return POINTS.seventhPlace;
+  if (finalPlacement === 8) return POINTS.eighthPlace;
   return 0;
 }
 
@@ -621,7 +625,7 @@ function sourceInsertPayload(tournamentId, source, sourceType, isAuthoritativeTo
 
 function inferFinalPlacement(participant) {
   const rank = Number(participant.final_rank);
-  return [1, 2, 3, 4].includes(rank) ? rank : null;
+  return [1, 2, 3, 4, 5, 6, 7, 8].includes(rank) ? rank : null;
 }
 
 function inferSwissKingStatus(participants, selectedParticipant, standingsRow = null, matches = []) {

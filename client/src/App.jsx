@@ -23,6 +23,7 @@ export default function App() {
         <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/import" element={<ImportTournamentPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/players/:userId" element={<ProfilePage />} />
         <Route
           path="/admin/review"
           element={

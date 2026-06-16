@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           colorBgLayout: '#f7f7f8',
           colorBorderSecondary: '#e5e7eb',
           borderRadius: 8,
-          fontFamily: '"Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+          fontFamily: '"Hanken Grotesk", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
         },
         components: {
           Button: {

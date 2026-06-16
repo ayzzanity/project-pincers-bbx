@@ -1,5 +1,5 @@
 import { BarChartOutlined, FlagOutlined, ImportOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Layout, Tag, Typography } from 'antd';
+import { Button, Layout } from 'antd';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext.jsx';
 
@@ -9,6 +9,7 @@ export default function AppLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { profile, isAdmin, signOut } = useAuth();
+  const displayName = profile?.display_name || 'BBX Player';
 
   const navItems = [
     {
@@ -44,21 +45,12 @@ export default function AppLayout() {
 
   return (
     <Layout className="min-h-screen">
-      <Sider
-        width={280}
-        breakpoint="lg"
-        collapsedWidth="0"
-        className="bbx-app-sider border-r border-bbx-line bg-white"
-      >
+      <Sider width={300} breakpoint="lg" collapsedWidth="0" className="bbx-app-sider border-r border-bbx-line bg-white">
         <div className="bbx-sidebar-brand">
-          <img
-            src="/brand/zamboanga-pincers-logo.jpg"
-            alt="Zamboanga Pincers logo"
-            className="bbx-sidebar-brand-logo"
-          />
+          <img src="/brand/zamboanga-pincers-logo.jpg" alt="Zamboanga Pincers logo" className="bbx-sidebar-brand-logo" />
           <div className="min-w-0">
-            <div className="brand-title bbx-sidebar-brand-title">Project Pincers</div>
-            <div className="bbx-sidebar-brand-subtitle">Zamboanga BBX Rankings</div>
+            <div className="brand-title bbx-sidebar-brand-title">PROJECT PINCERS</div>
+            <div className="bbx-sidebar-brand-subtitle">ZC BBX LOCAL RANKINGS</div>
           </div>
         </div>
 
@@ -81,36 +73,20 @@ export default function AppLayout() {
         </nav>
 
         <div className="bbx-sidebar-account">
-          <div className="bbx-sidebar-account-divider">
-            <div className="h-px flex-1 bg-bbx-line" />
-            <span>Account</span>
-            <div className="h-px flex-1 bg-bbx-line" />
-          </div>
-
           <div className="bbx-sidebar-account-card">
-            <Typography.Text className="bbx-sidebar-account-kicker">
-              Signed in as
-            </Typography.Text>
-            <div className="mt-2 flex min-w-0 items-center gap-2">
-              <Typography.Text className="bbx-sidebar-account-name">
-                {profile?.display_name || 'BBX Player'}
-              </Typography.Text>
-              {isAdmin ? (
-                <Tag color="red" className="m-0 rounded-md font-bold">
-                  Admin
-                </Tag>
-              ) : null}
+            <div className="bbx-sidebar-account-row">
+              <div className="bbx-sidebar-account-meta">
+                <div className="bbx-sidebar-account-name">{displayName}</div>
+                <div className="bbx-sidebar-account-role">{isAdmin ? 'Admin' : 'Blader'}</div>
+              </div>
+              <Button
+                type="text"
+                className="bbx-sidebar-account-action"
+                icon={<LogoutOutlined />}
+                aria-label="Sign out"
+                onClick={handleSignOut}
+              />
             </div>
-            <Button
-              block
-              danger
-              size="large"
-              className="mt-4 font-bold"
-              icon={<LogoutOutlined />}
-              onClick={handleSignOut}
-            >
-              Sign out
-            </Button>
           </div>
         </div>
       </Sider>

@@ -39,8 +39,6 @@ async function fetchTournamentV1(identifier, input) {
     requestV1(`/tournaments/${encodeURIComponent(identifier)}/matches.json`)
   ]);
 
-  console.log(tournamentBody);
-
   if (!tournamentBody.tournament) {
     throw new AppError(502, 'challonge_unexpected_response', 'Challonge returned an unexpected tournament response.');
   }

@@ -67,7 +67,7 @@ export default function LoginPage() {
             />
             <div className="min-w-0">
               <Typography.Title level={1} className="bbx-login-brand-title">
-                Project Pincers
+                PROJECT PINCERS
               </Typography.Title>
               <div className="mt-2 text-base font-black uppercase tracking-normal text-bbx-red sm:text-xl">
                 Zamboanga BBX Rankings

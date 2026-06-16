@@ -12,7 +12,6 @@ import {
 import { Alert, Button, Card, Collapse, Form, Input, Result, Segmented, Select, Space, Table, Tag, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import PageHeader from '../components/PageHeader.jsx';
 import ResponsiveTableWrapper from '../components/ResponsiveTableWrapper.jsx';
 import StatusTag from '../components/StatusTag.jsx';
 import { api } from '../lib/apiClient.js';
@@ -82,8 +81,49 @@ export default function ImportTournamentPage() {
     }
   }
 
+  function resolveImportValues(values) {
+    const allValues = form.getFieldsValue(true);
+    const mergedValues = { ...allValues, ...values };
+    const selectedMainSourceForSubmit = importedSources.find((item) => item.id === mergedValues.mainSourceId);
+    const selectedTopCutSourceForSubmit = importedSources.find((item) => item.id === mergedValues.topCutSourceId);
+
+    return {
+      ...mergedValues,
+      mainLink: mergedValues.mainLink || selectedMainSourceForSubmit?.challongeUrl,
+      topCutLink: mergedValues.topCutLink || selectedTopCutSourceForSubmit?.challongeUrl || null
+    };
+  }
+
+  async function validateMainSource() {
+    const fields = mainSourceMode === 'imported' ? ['mainSourceId'] : ['mainLink'];
+    await form.validateFields(fields);
+    const values = resolveImportValues({});
+
+    if (!values.mainLink) {
+      throw new Error('Select or paste a main Challonge tournament.');
+    }
+
+    return values;
+  }
+
+  async function validatePreviewFields() {
+    const fields = [
+      mainSourceMode === 'imported' ? 'mainSourceId' : 'mainLink',
+      topCutSourceMode === 'imported' ? 'topCutSourceId' : 'topCutLink',
+      'mainParticipantId'
+    ];
+
+    await form.validateFields(fields);
+    const values = resolveImportValues({});
+
+    if (!values.mainLink) {
+      throw new Error('Select or paste a main Challonge tournament.');
+    }
+
+    return values;
+  }
+
   async function fetchParticipants() {
-    const values = await form.validateFields(['mainLink']);
     setError(null);
     setPreview(null);
     setConfirmation(null);
@@ -92,6 +132,7 @@ export default function ImportTournamentPage() {
     setLoadingParticipants(true);
 
     try {
+      const values = await validateMainSource();
       const payload = await api.fetchParticipants(values.mainLink);
       setParticipantsPayload(payload);
     } catch (nextError) {
@@ -102,12 +143,12 @@ export default function ImportTournamentPage() {
   }
 
   async function previewResult() {
-    const values = await form.validateFields(['mainLink', 'topCutLink', 'mainParticipantId']);
     setError(null);
     setConfirmation(null);
     setLoadingPreview(true);
 
     try {
+      const values = await validatePreviewFields();
       setPreview(await api.previewImport(values));
     } catch (nextError) {
       setError(nextError);
@@ -117,11 +158,11 @@ export default function ImportTournamentPage() {
   }
 
   async function confirmImport() {
-    const values = await form.validateFields();
     setError(null);
     setConfirming(true);
 
     try {
+      const values = await validatePreviewFields();
       setConfirmation(await api.confirmImport(values));
     } catch (nextError) {
       setError(nextError);
@@ -165,17 +206,12 @@ export default function ImportTournamentPage() {
 
   return (
     <div className="bbx-import-page">
-      <PageHeader
-        title="Import Tournament"
-        description="Import one tournament result, optionally connect Top Cut to the same event, preview how backend scoring is calculated, then confirm to import."
-      />
-
       {confirmation ? (
         <Result
           status="success"
           icon={<CheckCircleOutlined />}
-          title="Import submitted"
-          subTitle={`Record status: ${titleize(confirmation.status)}. Review flags: ${confirmation.reviewFlagCount || 0}.`}
+          title="Import submitted for admin review"
+          subTitle={`This result is currently ${titleize(confirmation.status)} and will only reflect on the leaderboard and your profile after an admin verifies it.`}
           extra={[
             <Button key="leaderboard" type="primary">
               <Link to="/leaderboard">View Leaderboard</Link>
@@ -276,9 +312,17 @@ export default function ImportTournamentPage() {
                                 disabled={!selectedMainSource}
                                 optionFilterProp="searchText"
                                 optionLabelProp="plainLabel"
-                                placeholder={selectedMainSource ? 'Select linked Top Cut source' : 'Select an imported main tournament first'}
+                                placeholder={
+                                  selectedMainSource
+                                    ? 'Select linked Top Cut source'
+                                    : 'Select an imported main tournament first'
+                                }
                                 options={sourceOptions(topCutSourcesForSelectedMain)}
-                                notFoundContent={sourceError ? 'Could not load imported tournaments' : 'No linked Top Cut source for this tournament'}
+                                notFoundContent={
+                                  sourceError
+                                    ? 'Could not load imported tournaments'
+                                    : 'No linked Top Cut source for this tournament'
+                                }
                                 onChange={(sourceId) => selectImportedSource('topCutSourceId', 'topCutLink', sourceId)}
                                 onClear={() => form.setFieldValue('topCutLink', undefined)}
                               />
@@ -426,10 +470,11 @@ function PreviewPanel({ preview, confirming, onConfirm }) {
       opponentName: match.opponentName,
       score: match.score
     }))
-    .sort((a, b) =>
-      (a.stage === b.stage ? 0 : a.stage === 'swiss' ? -1 : 1)
-      || (a.round == null ? 1 : 0) - (b.round == null ? 1 : 0)
-      || (a.round || 0) - (b.round || 0)
+    .sort(
+      (a, b) =>
+        (a.stage === b.stage ? 0 : a.stage === 'swiss' ? -1 : 1) ||
+        (isMissingMatchRound(a.round) ? 1 : 0) - (isMissingMatchRound(b.round) ? 1 : 0) ||
+        (a.round || 0) - (b.round || 0)
     );
 
   const swissRecordText = swissRecordIncomplete
@@ -563,12 +608,17 @@ function PreviewPanel({ preview, confirming, onConfirm }) {
                               width: '48%',
                               render: (value, record) => (
                                 <span>
-                                  <strong>{titleize(value)}</strong>
-                                  <span className="text-bbx-muted"> vs {record.opponentName}</span>
+                                  <Tag color={value === 'swiss' ? 'gray' : 'gold'}>{titleize(value).toUpperCase()}</Tag>
+                                  <span>vs {record.opponentName}</span>
                                 </span>
                               )
                             },
-                            { title: 'Match', dataIndex: 'round', width: '14%', render: (value) => value ?? 'N/A' },
+                            {
+                              title: 'Match',
+                              dataIndex: 'round',
+                              width: '14%',
+                              render: (value) => (isMissingMatchRound(value) ? 'N/A' : value)
+                            },
                             { title: 'Score', dataIndex: 'score', width: '18%', render: (value) => value || '-' },
                             {
                               title: 'Result',
@@ -583,7 +633,7 @@ function PreviewPanel({ preview, confirming, onConfirm }) {
                           ]}
                         />
                       </ResponsiveTableWrapper>
-                      {matchRows.some((match) => match.round == null) ? (
+                      {matchRows.some((match) => isMissingMatchRound(match.round)) ? (
                         <p className="bbx-match-round-note">
                           N/A matches are extra bracket matches, such as a battle for third place or another placement match.
                         </p>
@@ -601,6 +651,10 @@ function PreviewPanel({ preview, confirming, onConfirm }) {
       </Button>
     </div>
   );
+}
+
+function isMissingMatchRound(round) {
+  return round == null || Number(round) <= 0;
 }
 
 function PreviewStatCard({ icon, label, value, featured = false }) {

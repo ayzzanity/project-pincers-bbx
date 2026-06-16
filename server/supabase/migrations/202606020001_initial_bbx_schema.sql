@@ -104,7 +104,7 @@ create table public.player_tournament_records (
   swiss_wins integer not null default 0 check (swiss_wins >= 0),
   top_cut_entry boolean not null default false,
   is_swiss_king boolean not null default false,
-  final_placement integer check (final_placement in (1, 2, 3, 4)),
+  final_placement integer check (final_placement in (1, 2, 3, 4, 5, 6, 7, 8)),
   total_points integer not null default 0 check (total_points >= 0),
   valid_wins integer not null default 0 check (valid_wins >= 0),
   approved_by uuid references public.profiles(id) on delete set null,

@@ -1,13 +1,7 @@
-import {
-  CalendarOutlined,
-  CrownOutlined,
-  FireOutlined,
-  RiseOutlined,
-  TrophyOutlined
-} from '@ant-design/icons';
-import { Alert, Button, Card, Descriptions, Empty, Modal, Spin, Table, Tag, Typography } from 'antd';
+import { CalendarOutlined, CrownOutlined, FireOutlined, RiseOutlined, TrophyOutlined } from '@ant-design/icons';
+import { Alert, Button, Card, Empty, Modal, Spin, Table, Tag, Typography } from 'antd';
 import { useEffect, useState } from 'react';
-import PageHeader from '../components/PageHeader.jsx';
+import { useParams } from 'react-router-dom';
 import ResponsiveTableWrapper from '../components/ResponsiveTableWrapper.jsx';
 import { ErrorCard, LoadingCard } from '../components/StateCard.jsx';
 import { useAuth } from '../contexts/AuthContext.jsx';
@@ -16,31 +10,35 @@ import { formatDate, formatPlacement, titleize } from '../utils/formatters.js';
 
 export default function ProfilePage() {
   const { user, profile } = useAuth();
+  const { userId: routeUserId } = useParams();
   const [stats, setStats] = useState(null);
   const [recentHistory, setRecentHistory] = useState([]);
   const [overallRank, setOverallRank] = useState(null);
   const [monthlyRank, setMonthlyRank] = useState(null);
   const [selectedHistoryRecord, setSelectedHistoryRecord] = useState(null);
+  const [showAllHistory, setShowAllHistory] = useState(false);
   const [historyDetails, setHistoryDetails] = useState(null);
   const [loadingHistoryDetails, setLoadingHistoryDetails] = useState(false);
   const [historyDetailsError, setHistoryDetailsError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const targetUserId = routeUserId || user.id;
+  const isOwnProfile = targetUserId === user.id;
 
   async function loadStats() {
     setLoading(true);
     setError(null);
     try {
       const [nextStats, leaderboard, monthlyLeaderboard, history] = await Promise.all([
-        api.getPlayerStats(user.id),
+        api.getPlayerStats(targetUserId),
         api.getLeaderboard(),
         api.getMonthlyLeaderboard(),
-        api.getPlayerHistory(user.id)
+        api.getPlayerHistory(targetUserId)
       ]);
       setStats(nextStats);
       setRecentHistory(history || []);
-      setOverallRank((leaderboard || []).findIndex((row) => row.user_id === user.id) + 1 || null);
-      setMonthlyRank((monthlyLeaderboard || []).findIndex((row) => row.user_id === user.id) + 1 || null);
+      setOverallRank((leaderboard || []).findIndex((row) => row.user_id === targetUserId) + 1 || null);
+      setMonthlyRank((monthlyLeaderboard || []).findIndex((row) => row.user_id === targetUserId) + 1 || null);
     } catch (nextError) {
       setError(nextError);
     } finally {
@@ -50,7 +48,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     loadStats();
-  }, [user.id]);
+  }, [targetUserId]);
 
   async function openHistoryDetails(record) {
     setSelectedHistoryRecord(record);
@@ -59,7 +57,7 @@ export default function ProfilePage() {
     setLoadingHistoryDetails(true);
 
     try {
-      setHistoryDetails(await api.getPlayerHistoryDetails(user.id, record.id));
+      setHistoryDetails(await api.getPlayerHistoryDetails(targetUserId, record.id));
     } catch (nextError) {
       setHistoryDetailsError(nextError);
     } finally {
@@ -76,14 +74,53 @@ export default function ProfilePage() {
   if (loading) return <LoadingCard message="Loading your stats..." />;
   if (error) return <ErrorCard error={error} onRetry={loadStats} />;
 
-  const displayName = stats?.display_name || profile?.display_name || 'BBX Player';
+  const displayName = stats?.display_name || (isOwnProfile ? profile?.display_name : null) || 'BBX Player';
   const totalPoints = stats?.total_points || 0;
   const validWins = stats?.total_valid_wins || 0;
   const verifiedEvents = stats?.approved_tournament_count || 0;
-  const podiumFinishCount = stats?.podium_finish_count
-    ?? ((stats?.champion_count || 0) + (stats?.finisher_count || 0) + (stats?.third_place_count || 0) + (stats?.fourth_place_count || 0));
+  const podiumFinishCount =
+    stats?.podium_finish_count ??
+    (stats?.champion_count || 0) +
+      (stats?.finisher_count || 0) +
+      (stats?.third_place_count || 0) +
+      (stats?.fourth_place_count || 0);
   const bladerOfMonthCount = stats?.blader_of_month_count || 0;
   const winRate = stats?.total_matches ? `${Math.round((validWins / stats.total_matches) * 1000) / 10}%` : 'N/A';
+  const sortedHistory = [...recentHistory].sort(sortHistoryByLatest);
+  const latestHistory = sortedHistory.slice(0, 5);
+  const historyColumns = [
+    {
+      title: 'Tournament',
+      dataIndex: 'tournament_name',
+      render: (value, record) => (
+        <Button className="bbx-history-tournament-link" type="link" onClick={() => openHistoryDetails(record)}>
+          {value}
+        </Button>
+      )
+    },
+    { title: 'Alias Used', dataIndex: 'player_name' },
+    {
+      title: 'Swiss Record',
+      dataIndex: 'swiss_record'
+    },
+    {
+      title: 'Placement',
+      dataIndex: 'final_placement',
+      render: (value, record) => (
+        <span>
+          <Tag color={placementTagColor(value)}>{formatPlacement(value)}</Tag>
+          {record.isSwissKing && <Tag color="gold">SWISS KING</Tag>}
+        </span>
+      )
+    },
+    { title: 'Points Earned', dataIndex: 'total_points' },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      render: (value) => <Tag color="green">{value === 'approved' ? 'Verified' : value || 'Verified'}</Tag>
+    },
+    { title: 'Date', dataIndex: 'event_date', render: formatDate }
+  ];
   const currentMonthLabel = new Intl.DateTimeFormat(undefined, {
     month: 'short',
     timeZone: 'Asia/Manila',
@@ -92,8 +129,6 @@ export default function ProfilePage() {
 
   return (
     <div className="bbx-profile-page">
-      <PageHeader title="My Profile" description="Your verified tournament stats and recent history." />
-
       <div className="bbx-profile-grid">
         <main className="min-w-0">
           <Card className="bbx-card bbx-profile-hero">
@@ -108,7 +143,8 @@ export default function ProfilePage() {
                     <TrophyOutlined /> {overallRank ? `#${overallRank} Overall Rank` : 'Overall Unranked'}
                   </Tag>
                   <Tag className="bbx-profile-rank-tag" color="gold">
-                    <CalendarOutlined /> {monthlyRank ? `${currentMonthLabel} #${monthlyRank}` : `${currentMonthLabel} Unranked`}
+                    <CalendarOutlined />{' '}
+                    {monthlyRank ? `${currentMonthLabel} #${monthlyRank}` : `${currentMonthLabel} Unranked`}
                   </Tag>
                 </div>
                 <p className="mt-3 max-w-xs text-sm leading-6 text-bbx-muted">
@@ -124,7 +160,12 @@ export default function ProfilePage() {
           </Card>
 
           <section className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <ProfileStat icon={<CalendarOutlined />} label="Tournaments Joined" value={verifiedEvents} hint="Verified Tournaments" />
+            <ProfileStat
+              icon={<CalendarOutlined />}
+              label="Tournaments Joined"
+              value={verifiedEvents}
+              hint="Verified Tournaments"
+            />
             <ProfileStat icon={<FireOutlined />} label="Total Match Wins" value={validWins} hint="Wins" />
             <ProfileStat
               icon={<RiseOutlined />}
@@ -132,18 +173,8 @@ export default function ProfilePage() {
               value={winRate}
               hint={stats?.total_matches ? `Of ${stats.total_matches} matches` : 'Needs match total'}
             />
-            <ProfileStat
-              icon={<CrownOutlined />}
-              label="Champion"
-              value={stats?.champion_count || 0}
-              hint="First Place"
-            />
-            <ProfileStat
-              icon={<TrophyOutlined />}
-              label="Finisher"
-              value={stats?.finisher_count || 0}
-              hint="Second Place"
-            />
+            <ProfileStat icon={<CrownOutlined />} label="Champion" value={stats?.champion_count || 0} hint="First Place" />
+            <ProfileStat icon={<TrophyOutlined />} label="Finisher" value={stats?.finisher_count || 0} hint="Second Place" />
             <ProfileStat
               icon={<CrownOutlined />}
               label="Swiss King"
@@ -155,41 +186,25 @@ export default function ProfilePage() {
           <Card
             className="bbx-card bbx-profile-history"
             title="Recent Tournament History"
-            extra={<Button className="bbx-outline-button">View All History</Button>}
+            extra={
+              <Button
+                className="bbx-outline-button"
+                disabled={sortedHistory.length <= 5}
+                onClick={() => setShowAllHistory(true)}
+              >
+                View All History
+              </Button>
+            }
           >
             {recentHistory.length ? (
               <ResponsiveTableWrapper>
                 <Table
                   size="small"
                   rowKey={(row) => row.id || `${row.tournament_name}-${row.date}`}
-                  dataSource={recentHistory}
+                  dataSource={latestHistory}
                   pagination={false}
                   scroll={{ x: 760 }}
-                  columns={[
-                    {
-                      title: 'Tournament',
-                      dataIndex: 'tournament_name',
-                      render: (value, record) => (
-                        <Button className="bbx-history-tournament-link" type="link" onClick={() => openHistoryDetails(record)}>
-                          {value}
-                        </Button>
-                      )
-                    },
-                    { title: 'Alias Used', dataIndex: 'player_name' },
-                    { title: 'Swiss Record', dataIndex: 'swiss_record' },
-                    {
-                      title: 'Placement',
-                      dataIndex: 'final_placement',
-                      render: formatPlacement
-                    },
-                    { title: 'Points Earned', dataIndex: 'total_points' },
-                    {
-                      title: 'Status',
-                      dataIndex: 'status',
-                      render: (value) => <Tag color="green">{value === 'approved' ? 'Verified' : value || 'Verified'}</Tag>
-                    },
-                    { title: 'Date', dataIndex: 'event_date', render: formatDate }
-                  ]}
+                  columns={historyColumns}
                 />
               </ResponsiveTableWrapper>
             ) : (
@@ -224,7 +239,9 @@ export default function ProfilePage() {
               <TrophyOutlined />
               <div>
                 <strong>{overallRank === 1 ? 'Top Local Player' : 'Keep Climbing'}</strong>
-                <p>{overallRank === 1 ? 'Keep competing to defend your rank.' : 'Submit verified results to climb the board.'}</p>
+                <p>
+                  {overallRank === 1 ? 'Keep competing to defend your rank.' : 'Submit verified results to climb the board.'}
+                </p>
               </div>
             </div>
           </Card>
@@ -248,10 +265,39 @@ export default function ProfilePage() {
             <Spin />
           </div>
         ) : historyDetailsError ? (
-          <Alert type="error" showIcon message="Could not load tournament details" description={historyDetailsError.message} />
+          <Alert
+            type="error"
+            showIcon
+            message="Could not load tournament details"
+            description={historyDetailsError.message}
+          />
         ) : historyDetails ? (
           <HistoryDetails details={historyDetails} />
         ) : null}
+      </Modal>
+
+      <Modal
+        className="bbx-history-all-modal"
+        open={showAllHistory}
+        width={1100}
+        title={`All Tournament History ${recentHistory.length ? `(${recentHistory.length})` : ''}`}
+        onCancel={() => setShowAllHistory(false)}
+        footer={
+          <Button type="primary" onClick={() => setShowAllHistory(false)}>
+            Close
+          </Button>
+        }
+      >
+        <ResponsiveTableWrapper>
+          <Table
+            size="small"
+            rowKey={(row) => row.id || `${row.tournament_name}-${row.date}`}
+            dataSource={sortedHistory}
+            pagination={{ pageSize: 10, showSizeChanger: false }}
+            scroll={{ x: 760 }}
+            columns={historyColumns}
+          />
+        </ResponsiveTableWrapper>
       </Modal>
     </div>
   );
@@ -266,17 +312,18 @@ function HistoryDetails({ details }) {
 
   return (
     <div className="bbx-history-details">
-      <Descriptions bordered size="small" column={2}>
-        <Descriptions.Item label="Player">{details.playerName}</Descriptions.Item>
-        <Descriptions.Item label="Tournament Date">{formatDate(details.eventDate)}</Descriptions.Item>
-        <Descriptions.Item label="Swiss Record">{details.swissRecord}</Descriptions.Item>
-        <Descriptions.Item label="Final Placement">{formatPlacement(details.finalPlacement)}</Descriptions.Item>
-        <Descriptions.Item label="Top Cut">{details.topCutEntry ? 'Entered' : 'Not entered'}</Descriptions.Item>
-        <Descriptions.Item label="Swiss King">{details.isSwissKing ? 'Yes' : 'No'}</Descriptions.Item>
-        <Descriptions.Item label="Total Points" span={2}>
-          <strong className="text-lg text-bbx-red">{details.totalPoints}</strong>
-        </Descriptions.Item>
-      </Descriptions>
+      <div className="bbx-history-summary-table">
+        <DetailSummaryItem label="Player" value={details.playerName} />
+        <DetailSummaryItem label="Tournament Date" value={formatDate(details.eventDate)} />
+        <DetailSummaryItem label="Swiss Record" value={details.swissRecord} />
+        <DetailSummaryItem label="Final Placement" value={formatPlacement(details.finalPlacement)} subtle />
+        <DetailSummaryItem label="Top Cut" value={details.topCutEntry ? 'Entered' : 'Not entered'} />
+        <DetailSummaryItem label="Swiss King" value={details.isSwissKing ? 'Yes' : 'No'} />
+        <div className="bbx-history-summary-total">
+          <span>Total Points</span>
+          <strong>{details.totalPoints}</strong>
+        </div>
+      </div>
 
       <h3 className="bbx-history-detail-title">Points Calculation</h3>
       <Table
@@ -303,9 +350,7 @@ function HistoryDetails({ details }) {
         dataSource={matchRows}
         pagination={false}
         rowClassName={(record, index) =>
-          record.stage === 'top_cut' && matchRows[index - 1]?.stage !== 'top_cut'
-            ? 'bbx-match-stage-divider'
-            : ''
+          record.stage === 'top_cut' && matchRows[index - 1]?.stage !== 'top_cut' ? 'bbx-match-stage-divider' : ''
         }
         locale={{ emptyText: 'No persisted match results for this tournament.' }}
         columns={[
@@ -315,8 +360,8 @@ function HistoryDetails({ details }) {
             width: '48%',
             render: (value, record) => (
               <span>
-                <strong>{titleize(value)}</strong>
-                <span className="text-bbx-muted"> vs {record.opponentName}</span>
+                <Tag color={value === 'swiss' ? 'gray' : 'gold'}>{titleize(value).toUpperCase()}</Tag>
+                <span> vs {record.opponentName}</span>
               </span>
             )
           },
@@ -326,7 +371,9 @@ function HistoryDetails({ details }) {
             title: 'Result',
             dataIndex: 'result',
             render: (value) => (
-              <Tag color={value === 'win' ? 'green' : value === 'loss' ? 'red' : 'gold'}>{titleize(value)}</Tag>
+              <Tag color={value === 'win' ? 'green' : value === 'loss' ? 'red' : 'gold'}>
+                {titleize(value).toUpperCase()}
+              </Tag>
             )
           }
         ]}
@@ -338,6 +385,34 @@ function HistoryDetails({ details }) {
       ) : null}
     </div>
   );
+}
+
+function DetailSummaryItem({ label, value, subtle = false }) {
+  return (
+    <div className="bbx-history-summary-cell">
+      <span>{label}</span>
+      <strong className={subtle ? 'is-subtle' : ''}>{value}</strong>
+    </div>
+  );
+}
+
+function placementTagColor(placement) {
+  const rank = Number(placement);
+  if (!rank) return 'default';
+  if (rank === 1) return 'gold';
+  if (rank === 2) return 'default';
+  if (rank === 3) return 'volcano';
+  return 'blue';
+}
+
+function sortHistoryByLatest(a, b) {
+  return historyTimestamp(b) - historyTimestamp(a);
+}
+
+function historyTimestamp(record) {
+  const value = record?.event_date || record?.date || record?.created_at;
+  const timestamp = value ? new Date(value).getTime() : 0;
+  return Number.isFinite(timestamp) ? timestamp : 0;
 }
 
 function ProfileStat({ icon, label, value, hint, success = false }) {

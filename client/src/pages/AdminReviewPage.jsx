@@ -9,9 +9,23 @@ import {
   SearchOutlined,
   WarningFilled
 } from '@ant-design/icons';
-import { Alert, Badge, Button, Card, Descriptions, Input, Modal, Select, Space, Table, Tabs, Tag, Typography, message } from 'antd';
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  Descriptions,
+  Input,
+  Modal,
+  Select,
+  Space,
+  Table,
+  Tabs,
+  Tag,
+  Typography,
+  message
+} from 'antd';
 import { useEffect, useMemo, useState } from 'react';
-import PageHeader from '../components/PageHeader.jsx';
 import ResponsiveTableWrapper from '../components/ResponsiveTableWrapper.jsx';
 import { EmptyCard, ErrorCard, LoadingCard } from '../components/StateCard.jsx';
 import StatusTag from '../components/StatusTag.jsx';
@@ -33,10 +47,7 @@ export default function AdminReviewPage() {
     setLoading(true);
     setError(null);
     try {
-      const [nextPendingRecords, nextFlags] = await Promise.all([
-        api.getPendingRecords(),
-        api.getReviewFlags()
-      ]);
+      const [nextPendingRecords, nextFlags] = await Promise.all([api.getPendingRecords(), api.getReviewFlags()]);
       setPendingRecords(nextPendingRecords);
       setFlags(nextFlags);
     } catch (nextError) {
@@ -55,9 +66,10 @@ export default function AdminReviewPage() {
     const actionLabel = status === 'approved' ? 'Verify' : 'Reject';
     Modal.confirm({
       title: `${actionLabel} this record?`,
-      content: status === 'approved'
-        ? 'This verifies the player tournament record and includes it in rankings.'
-        : 'This permanently removes the submitted record and releases the participant name so it can be imported again.',
+      content:
+        status === 'approved'
+          ? 'This verifies the player tournament record and includes it in rankings.'
+          : 'This permanently removes the submitted record and releases the participant name so it can be imported again.',
       okText: actionLabel,
       okButtonProps: { danger: status === 'rejected' },
       async onOk() {
@@ -78,11 +90,7 @@ export default function AdminReviewPage() {
     const needle = query.trim().toLowerCase();
     if (!needle) return pendingRecords;
     return pendingRecords.filter((record) => {
-      const haystack = [
-        record.tournament?.name,
-        record.submitted_by_profile?.display_name,
-        record.player_name
-      ]
+      const haystack = [record.tournament?.name, record.submitted_by_profile?.display_name, record.player_name]
         .filter(Boolean)
         .join(' ')
         .toLowerCase();
@@ -103,27 +111,38 @@ export default function AdminReviewPage() {
 
   return (
     <div className="bbx-admin-page">
-      <PageHeader
-        title="Admin Review"
-        description="Review pending tournament records and investigate flags. Verified records will affect leaderboard and player stats."
-        action={
-          <div className="text-right">
-            <Button className="bbx-outline-button" icon={<ReloadOutlined />} onClick={loadReviewData}>
-              Refresh
-            </Button>
-            <div className="mt-2 text-xs font-semibold text-bbx-muted">Last updated: Just now</div>
-          </div>
-        }
-      />
+      <div className="mb-5 flex justify-end">
+        <Button className="bbx-outline-button" icon={<ReloadOutlined />} onClick={loadReviewData}>
+          Refresh
+        </Button>
+      </div>
 
       {!hasPendingRecords && !hasFlags ? (
         <EmptyCard description="No pending records or open review flags." />
       ) : (
         <>
           <section className="mb-7 grid gap-5 md:grid-cols-3">
-            <AdminSummaryCard tone="pending" icon={<ClockCircleOutlined />} label="Pending Records" value={pendingRecords.length} hint="Waiting for review" />
-            <AdminSummaryCard tone="flags" icon={<FlagOutlined />} label="Open Review Flags" value={flags.length} hint="Need attention" />
-            <AdminSummaryCard tone="danger" icon={<WarningFilled />} label="High Severity Flags" value={highSeverityCount} hint="Require immediate review" />
+            <AdminSummaryCard
+              tone="pending"
+              icon={<ClockCircleOutlined />}
+              label="Pending Records"
+              value={pendingRecords.length}
+              hint="Waiting for review"
+            />
+            <AdminSummaryCard
+              tone="flags"
+              icon={<FlagOutlined />}
+              label="Open Review Flags"
+              value={flags.length}
+              hint="Need attention"
+            />
+            <AdminSummaryCard
+              tone="danger"
+              icon={<WarningFilled />}
+              label="High Severity Flags"
+              value={highSeverityCount}
+              hint="Require immediate review"
+            />
           </section>
 
           <Tabs
@@ -189,8 +208,8 @@ export default function AdminReviewPage() {
           reviewTarget?.type === 'record'
             ? flags.filter((flag) => flag.player_record_id === reviewTarget.item.id)
             : reviewTarget
-            ? [reviewTarget.item]
-            : []
+              ? [reviewTarget.item]
+              : []
         }
         decidingId={decidingId}
         onClose={() => setReviewTarget(null)}
@@ -219,11 +238,7 @@ function PendingRecordsCard({ records, query, setQuery, decidingId, decide, onRe
       }
       extra={
         <Space>
-          <Select
-            value="all"
-            options={[{ value: 'all', label: 'All' }]}
-            className="w-24"
-          />
+          <Select value="all" options={[{ value: 'all', label: 'All' }]} className="w-24" />
           <Input
             allowClear
             prefix={<SearchOutlined />}
@@ -268,7 +283,11 @@ function PendingRecordsCard({ records, query, setQuery, decidingId, decide, onRe
               title: 'Flags',
               dataIndex: 'review_flags',
               render: (reviewFlags = []) =>
-                reviewFlags.length ? <StatusTag status="review">{reviewFlags.length} open</StatusTag> : <StatusTag status="clean">Clean</StatusTag>
+                reviewFlags.length ? (
+                  <StatusTag status="review">{reviewFlags.length} open</StatusTag>
+                ) : (
+                  <StatusTag status="clean">Clean</StatusTag>
+                )
             },
             { title: 'Submitted', dataIndex: 'created_at', render: formatDate },
             {
@@ -393,15 +412,7 @@ function SeverityTag({ severity }) {
   return <Tag color={color}>{titleize(severity)}</Tag>;
 }
 
-function ReviewDetailsModal({
-  target,
-  relatedRecord,
-  relatedFlags,
-  decidingId,
-  onClose,
-  onDecide,
-  onReviewFlags
-}) {
+function ReviewDetailsModal({ target, relatedRecord, relatedFlags, decidingId, onClose, onDecide, onReviewFlags }) {
   if (!target) return null;
 
   const { item, type } = target;
@@ -472,9 +483,7 @@ function ReviewDetailsModal({
           <Descriptions.Item label="Claimed Alias">{relatedRecord.player_name}</Descriptions.Item>
           <Descriptions.Item label="Points">{relatedRecord.total_points}</Descriptions.Item>
           <Descriptions.Item label="Swiss Wins">{relatedRecord.swiss_wins}</Descriptions.Item>
-          <Descriptions.Item label="Final Placement">
-            {formatPlacement(relatedRecord.final_placement)}
-          </Descriptions.Item>
+          <Descriptions.Item label="Final Placement">{formatPlacement(relatedRecord.final_placement)}</Descriptions.Item>
           <Descriptions.Item label="Submitted">{formatDate(relatedRecord.created_at)}</Descriptions.Item>
           <Descriptions.Item label="Challonge Links" span={2}>
             {(relatedRecord.tournament_sources || []).length ? (

@@ -8,8 +8,8 @@ export function formatDate(value) {
 }
 
 export function formatPlacement(value) {
-  if (!value) return 'Unplaced';
-  const suffix = value === 1 ? 'st' : value === 2 ? 'nd' : value === 3 ? 'rd' : 'th';
+  if (!value) return 'UNPLACED';
+  const suffix = value === 1 ? 'ST' : value === 2 ? 'ND' : value === 3 ? 'RD' : 'TH';
   return `${value}${suffix}`;
 }
 

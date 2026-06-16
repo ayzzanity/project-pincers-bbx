@@ -1,13 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
+  --font-body: 'Hanken Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'Hanken Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-label: 'JetBrains Mono', 'Hanken Grotesk', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   color: #171717;
   background: #f7f7f8;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-body);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -18,7 +21,7 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-body);
 }
 
 button,
@@ -38,8 +41,14 @@ h3,
 .rank-number,
 .stat-number,
 .ant-statistic-content {
-  font-family: "Poppins", "Inter", sans-serif;
-  letter-spacing: -0.01em;
+  font-family: var(--font-heading);
+  letter-spacing: 0;
+}
+
+.brand-title,
+.page-title,
+.hero-title {
+  font-family: var(--font-heading) !important;
 }
 
 h1,
@@ -48,7 +57,7 @@ h3,
 .brand-title,
 .page-title,
 .hero-title {
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .rank-number,
@@ -59,6 +68,23 @@ h3,
 
 .ant-layout {
   background: #f7f7f8;
+}
+
+.ant-form-item-label > label,
+.ant-table-thead > tr > th,
+.ant-descriptions-item-label,
+.ant-card-head-title,
+.ant-tabs-tab,
+.ant-tag,
+.bbx-sidebar-nav-label,
+.bbx-import-step-label,
+.bbx-import-source-picker-label,
+.bbx-import-summary-row > span,
+.bbx-summary-label,
+.bbx-status-tag,
+[class*='text-xs'][class*='uppercase'] {
+  font-family: var(--font-label);
+  letter-spacing: 0;
 }
 
 .bbx-app-sider .ant-layout-sider-children {
@@ -90,17 +116,18 @@ h3,
 .bbx-sidebar-brand-title {
   overflow: visible;
   color: #0f172a;
-  font-family: "Poppins", "Inter", sans-serif;
-  font-size: 23px;
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.05;
+  font-family: var(--font-heading) !important;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
   white-space: nowrap;
 }
 
 .bbx-sidebar-brand-subtitle {
   margin-top: 5px;
   color: #d71920;
+  font-family: var(--font-label);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -150,7 +177,7 @@ h3,
 }
 
 .bbx-sidebar-nav-item.is-active::after {
-  content: "";
+  content: '';
   position: absolute;
   right: 10px;
   top: 50%;
@@ -180,59 +207,62 @@ h3,
   padding: 16px;
 }
 
-.bbx-sidebar-account-divider {
-  margin-bottom: 12px;
+.bbx-sidebar-account-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 12px 14px;
+  box-shadow: 0 8px 18px rgba(23, 23, 23, 0.05);
+}
+
+.bbx-sidebar-account-row {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 12px;
 }
 
-.bbx-sidebar-account-divider span {
-  color: #9ca3af;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.bbx-sidebar-account-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: #ffffff;
-  padding: 16px;
-  box-shadow: 0 10px 24px rgba(23, 23, 23, 0.06);
-}
-
-.bbx-sidebar-account-kicker {
-  display: block;
-  color: #6b7280;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  line-height: 1;
-  text-transform: uppercase;
+.bbx-sidebar-account-meta {
+  min-width: 0;
+  flex: 1;
 }
 
 .bbx-sidebar-account-name {
   min-width: 0;
   overflow: hidden;
   color: #0f172a;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.1;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.bbx-sidebar-account .ant-tag {
-  flex: none;
-  margin-inline-end: 0;
+.bbx-sidebar-account-role {
+  margin-top: 3px;
+  color: #d71920;
+  font-family: var(--font-label);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
-.bbx-sidebar-account .ant-btn {
-  border-radius: 10px;
-  font-weight: 800;
+.bbx-sidebar-account-action.ant-btn {
+  display: inline-flex;
+  height: 40px;
+  width: 40px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #000000;
+  font-size: 18px;
+}
+
+.bbx-sidebar-account-action.ant-btn:hover {
+  background: #f8fafc !important;
+  color: #d71920 !important;
 }
 
 @media (max-width: 991px) {
@@ -258,8 +288,10 @@ h3,
 .bbx-section-title {
   margin: 0;
   color: #171717;
-  font-size: 24px;
-  font-weight: 750;
+  font-family: var(--font-heading) !important;
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .bbx-muted {
@@ -328,8 +360,72 @@ h3,
   background:
     linear-gradient(135deg, transparent 0 42%, rgba(215, 25, 32, 0.025) 42% 58%, transparent 58%),
     radial-gradient(circle at center, rgba(23, 23, 23, 0.035) 0 1px, transparent 1px);
-  background-size: auto, 18px 18px;
+  background-size:
+    auto,
+    18px 18px;
   pointer-events: none;
+}
+
+.bbx-leaderboard-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.bbx-leaderboard-mode-toggle {
+  width: fit-content;
+}
+
+.bbx-leaderboard-mode-toggle.ant-segmented {
+  padding: 4px;
+  background: #f1f3f5;
+}
+
+.bbx-leaderboard-mode-toggle .ant-segmented-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  font-weight: 800;
+}
+
+.bbx-leaderboard-mode-toggle .ant-segmented-item-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  line-height: 1;
+}
+
+.bbx-leaderboard-mode-toggle .ant-segmented-item-selected {
+  color: #d71920;
+}
+
+.bbx-leaderboard-filter-dropdown {
+  min-width: 280px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 18px 36px rgba(23, 23, 23, 0.12);
+  padding: 14px;
+}
+
+.bbx-leaderboard-filter-dropdown-title {
+  margin-bottom: 10px;
+  color: #171717;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.bbx-leaderboard-filter-dropdown-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bbx-leaderboard-filter-select {
+  min-width: 180px;
 }
 
 .bbx-podium-grid {
@@ -345,6 +441,16 @@ h3,
   min-height: 245px;
   border-radius: 8px !important;
   overflow: visible;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.bbx-podium-card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
 }
 
 .bbx-podium-card .ant-card-body {
@@ -355,13 +461,24 @@ h3,
   padding: 38px 28px 18px;
 }
 
+.bbx-podium-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(23, 23, 23, 0.12);
+}
+
+.bbx-podium-card.is-empty:hover {
+  border-color: #f0b4b7;
+}
+
 .bbx-podium-card.is-featured {
   min-height: 300px;
   border: 2px solid #e71921;
-  background:
-    radial-gradient(circle at 50% 28%, rgba(245, 180, 51, 0.22), transparent 31%),
-    #ffffff;
+  background: radial-gradient(circle at 50% 28%, rgba(245, 180, 51, 0.22), transparent 31%), #ffffff;
   box-shadow: 0 18px 42px rgba(215, 25, 32, 0.14);
+}
+
+.bbx-podium-card.is-featured:hover {
+  box-shadow: 0 26px 52px rgba(215, 25, 32, 0.2);
 }
 
 .bbx-podium-card.is-featured .ant-card-body {
@@ -370,21 +487,31 @@ h3,
 }
 
 .bbx-podium-player-name {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-heading);
   font-size: 20px;
   font-weight: 800;
   letter-spacing: 0;
 }
 
+.bbx-leaderboard-player-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.bbx-leaderboard-player-link:hover {
+  color: #d71920;
+}
+
 .bbx-podium-card .stat-number {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-heading);
   font-weight: 800;
   letter-spacing: 0;
 }
 
 .bbx-podium-card .text-bbx-muted,
 .bbx-podium-metrics {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-label);
   letter-spacing: 0;
 }
 
@@ -403,7 +530,7 @@ h3,
   color: #ffffff;
   font-size: 26px;
   font-weight: 950;
-  font-family: "Poppins", "Inter", sans-serif;
+  font-family: var(--font-heading);
   line-height: 1;
   padding-bottom: 12px;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
@@ -439,6 +566,7 @@ h3,
 .bbx-podium-laurel {
   position: absolute;
   inset: 0;
+  z-index: 0;
   mask: url('/brand/laurel.svg') center / contain no-repeat;
   -webkit-mask: url('/brand/laurel.svg') center / contain no-repeat;
   pointer-events: none;
@@ -459,9 +587,13 @@ h3,
 .bbx-podium-logo {
   position: relative;
   z-index: 1;
-  height: 64px;
-  width: 64px;
-  object-fit: contain;
+  height: 52px;
+  width: 52px;
+  border: 3px solid #ffffff;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(25, 25, 25, 0.12);
+  object-fit: cover;
 }
 
 .bbx-podium-crown {
@@ -503,7 +635,7 @@ h3,
 }
 
 .bbx-podium-metrics .font-black {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-heading);
   font-weight: 800;
   letter-spacing: 0;
 }
@@ -544,7 +676,6 @@ h3,
     grid-template-columns: minmax(0, 1.45fr) minmax(420px, 0.85fr);
     gap: 20px;
   }
-
 }
 
 .bbx-import-stepbar {
@@ -937,9 +1068,7 @@ h3,
 
 .bbx-profile-hero {
   overflow: hidden;
-  background:
-    linear-gradient(135deg, transparent 0 78%, rgba(215, 25, 32, 0.08) 78%),
-    #ffffff;
+  background: linear-gradient(135deg, transparent 0 78%, rgba(215, 25, 32, 0.08) 78%), #ffffff;
 }
 
 .bbx-profile-hero .ant-card-body {
@@ -1081,9 +1210,78 @@ h3,
 .bbx-history-detail-title {
   margin: 20px 0 10px;
   color: #171717;
-  font-family: "Poppins", "Inter", sans-serif;
+  font-family: var(--font-heading);
   font-size: 14px;
   font-weight: 700;
+}
+
+.bbx-history-summary-table {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  background: #ffffff;
+}
+
+.bbx-history-summary-cell {
+  display: grid;
+  grid-template-columns: minmax(120px, 0.9fr) minmax(0, 1fr);
+  align-items: center;
+  min-height: 42px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.bbx-history-summary-cell:nth-child(odd) {
+  border-right: 1px solid #e5e7eb;
+}
+
+.bbx-history-summary-cell > span,
+.bbx-history-summary-total > span {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  background: #fafafa;
+  padding: 9px 12px;
+  color: #6b7280;
+  font-family: var(--font-label);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.bbx-history-summary-cell > strong {
+  min-width: 0;
+  padding: 9px 12px;
+  color: #171717;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: right;
+}
+
+.bbx-history-summary-cell > strong.is-subtle {
+  color: #4b5563;
+  font-style: italic;
+}
+
+.bbx-history-summary-total {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  min-height: 48px;
+}
+
+.bbx-history-summary-total > span {
+  background: #ffffff;
+}
+
+.bbx-history-summary-total > strong {
+  padding: 9px 14px;
+  color: #e71921;
+  font-size: 20px;
+  font-weight: 900;
+  text-align: right;
 }
 
 .bbx-history-details .ant-table-thead > tr > th,
@@ -1102,7 +1300,7 @@ h3,
 
 .bbx-history-details .ant-table-tbody > tr.bbx-match-stage-divider > td,
 .bbx-preview-detail-body .ant-table-tbody > tr.bbx-match-stage-divider > td {
-  border-top: 3px solid #f2b8bb;
+  border-top: 3px solid #a8a8a8;
 }
 
 .bbx-match-round-note {
@@ -1368,10 +1566,11 @@ h3,
 }
 
 .bbx-login-watermark-left {
-  left: -90px;
-  top: 130px;
-  width: 420px;
-  height: 420px;
+  left: clamp(350px, calc(25vw - 160px), 260px);
+  top: 45%;
+  transform: translate(-50%, -50%);
+  width: clamp(300px, 24vw, 420px);
+  height: clamp(300px, 24vw, 420px);
 }
 
 .bbx-login-podium {
@@ -1399,7 +1598,8 @@ h3,
   margin: 0 !important;
   color: #171717 !important;
   font-size: 28px !important;
-  font-weight: 900 !important;
+  font-family: var(--font-heading) !important;
+  font-weight: 800 !important;
   line-height: 1.05 !important;
 }
 
@@ -1407,7 +1607,8 @@ h3,
   margin: 0 !important;
   color: #171717 !important;
   font-size: 34px !important;
-  font-weight: 950 !important;
+  font-family: var(--font-heading) !important;
+  font-weight: 800 !important;
   line-height: 1.02 !important;
 }
 
@@ -1569,9 +1770,37 @@ h3,
     min-width: 360px;
   }
 
+  .bbx-history-summary-table {
+    grid-template-columns: 1fr;
+  }
+
+  .bbx-history-summary-cell:nth-child(odd) {
+    border-right: 0;
+  }
+
+  .bbx-history-summary-cell {
+    grid-template-columns: minmax(118px, 0.9fr) minmax(0, 1fr);
+  }
+
   .bbx-podium-grid {
     grid-template-columns: 1fr;
     gap: 28px;
+  }
+
+  .bbx-leaderboard-header-actions {
+    justify-content: flex-start;
+  }
+
+  .bbx-leaderboard-mode-toggle {
+    align-self: flex-start;
+  }
+
+  .bbx-leaderboard-filter-dropdown {
+    min-width: 240px;
+  }
+
+  .bbx-leaderboard-filter-select {
+    width: 100%;
   }
 
   .bbx-podium-card,
